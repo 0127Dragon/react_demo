@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <div id="list"></div>
+    <div id="displayTimer"></div>
+
+    <div id="methodCreateReactChild"></div>
+    
+
+</body>
+<script src="./js/react.development.js"></script>
+<script src="./js/react-dom.development.js"></script>
+<script src="./js/babel.min.js"></script>
+<script type="text/babel">
+
+    /**
+     * 最基本的使用react
+     * */
+    const pinkColor = 'pink';
+    const vDOM = (
+        <h1 style={{
+            color:pinkColor
+        }}>hello,react!</h1>
+    )
+    ReactDOM.render(vDOM,document.getElementById('app'))
+
+    const languages = ['Java',"JavaScript","HTML/CSS","Python","C++","C#"];
+    ReactDOM.render((
+        <div>
+            <ul>
+                {languages.map(item => {
+                    return <li key={item}>{item}</li>
+                })}
+            </ul>
+        </div>
+    ),document.getElementById('list'))
+
+
+    function MyComponent(){
+        return (
+            <div>
+                <h1>methodCreateReactChild</h1>
+            </div>
+        )
+    }
+    ReactDOM.render(<MyComponent/>,document.getElementById('methodCreateReactChild'))
+
+
+</script>
+</html>
