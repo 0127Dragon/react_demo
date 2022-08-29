@@ -9,6 +9,7 @@
 <body>
     <div id="app"></div>
     <div id="classComponent"></div>
+    <div id="stateComponent"></div>
     
 </body>
 <script src="./js/react.development.js"></script>
@@ -42,15 +43,22 @@
     ReactDOM.render(<MyComponent/>,
     document.getElementById('classComponent'))
 
-    class Person {
-        constructor(name,age){
-            this.name = name;
-            this.age = age;
+    class StateComponent extends React.Component{
+        constructor(){
+            super();
+            this.state = {
+                count:1
+            };
+        }
+        render(){
+            return (<h2 onClick={() => {this.increment()}}>count:{this.state.count}</h2>)
+        }
+        increment(){
+            this.setState({
+                count:++this.state.count
+            })
         }
     }
-    class Student extends Person{
-
-    }
-    console.log(new Student());
+    ReactDOM.render(<StateComponent/>,document.getElementById("stateComponent"));
 </script>
 </html>
