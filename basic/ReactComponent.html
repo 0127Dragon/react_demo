@@ -20,6 +20,7 @@
             super();
         }
         render(){
+            console.log('MyComponent this:',this);
             return (
                 <div>
                     <h2>[master][hot-fix changed]我是class组件 master hot-fix[]</h2>
@@ -39,5 +40,16 @@
 
     ReactDOM.render(<MyComponent/>,
     document.getElementById('classComponent'))
+
+    class Person {
+        constructor(name,age){
+            this.name = name;
+            this.age = age;
+        }
+    }
+    class Student extends Person{
+
+    }
+    console.log(new Student());
 </script>
 </html>
