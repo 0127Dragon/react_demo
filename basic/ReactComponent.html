@@ -44,24 +44,16 @@
     document.getElementById('classComponent'))
 
     class StateComponent extends React.Component{
-        constructor(){
-            super();
-            this.state = {
-                count:1
-            };
-        }
+        state = { count:1 }
         render(){
-            return (<h2 onClick={() => {this.increment()}}>count:{this.state.count}</h2>)
+            return (<h2 onClick={this.increment}>count:{this.state.count}</h2>)
         }
-        increment(){
+        increment = () => {
             this.setState({
                 count:++this.state.count
             })
         }
     }
     ReactDOM.render(<StateComponent/>,document.getElementById("stateComponent"));
-
-    //虚拟机内容
-    //ssh
 </script>
 </html>
