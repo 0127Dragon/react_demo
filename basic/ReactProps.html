@@ -26,25 +26,55 @@
         }
     }
     class Person extends React.Component {
-        static defaultProps = {
-            dataList:[{id:1,name:'测试1',sex:'男',age:'23'},
-                        {id:2,name:'测试2',sex:'男',age:'25'},
-                        {id:3,name:'测试3',sex:'男',age:'24'}
-                    ]
+        state = {
+            dataList:[
+                {id:0,name:'测试1',sex:'男',age:'23'},
+                {id:1,name:'测试2',sex:'男',age:'25'},
+                {id:2,name:'测试3',sex:'男',age:'24'}
+            ]
         }
+        ageInput = React.createRef()
         render(){
             return (
-                <ul>
-                {
-                    this.props.dataList.map(item =>{
-                        return <Item key={item.id} {...item}/>
-                    })
-                }
-                </ul>
+                <div>
+                    <p>
+                        请输入姓名：<input ref="nameInput"/>
+                    </p>
+                    <p>
+                        请输入性别：<input ref={(dom) => this.sexInput = dom}/>
+                    </p>
+                    <p>
+                        请输入年龄：<input ref={this.ageInput}/>
+                    </p>
+                    <p>
+                        <button onClick={this.appendElement}>添加</button>
+                    </p>
+                    <ul onClick={this.props.handlerClick}>
+                    {
+                        this.state.dataList.map(item =>{
+                            return <Item key={item.id} {...item}/>
+                        })
+                    }
+                    </ul>
+                </div>
             )
         }
+        appendElement = () => {
+            let name = this.refs.nameInput.value,
+            sex = this.sexInput.value,
+            age = this.ageInput.current.value;
+            console.log(name,sex,age);
+            this.setState({
+                dataList:[...this.state.dataList,{id:this.state.dataList.length,name,sex,age}]
+            })
+            this.refs.nameInput.value = '',
+            this.sexInput.value = '';
+            this.ageInput.current.value = '';
+            alert('添加成功！');
+        }
+
     }
-    ReactDOM.render(<Person/>,document.getElementById('app'));
+    ReactDOM.render(<Person handlerClick={() => {console.log('handlerClick');}}/>,document.getElementById('app'));
 
 </script>
 </html>
