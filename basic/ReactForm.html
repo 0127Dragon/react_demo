@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+</body>
+<script src="./js/react.development.js"></script>
+<script src="./js/react-dom.development.js"></script>
+<script src="./js/babel.min.js"></script>
+<script src="./js/prop-types.js"></script>
+<script type="text/babel">
+    class Item extends React.Component{
+        static propTypes = {
+            id:PropTypes.number.isRequired
+        }
+        render(){
+            let {name,age,sex} = this.props;
+            return (<div><li>姓名：{name}</li><li>年龄：{age}</li><li>性别：{sex}</li></div>)
+        }
+    }
+    class Person extends React.Component {
+        state = {
+            dataList:[
+                {id:0,name:'测试1',sex:'男',age:'23'}
+            ],
+            form:{
+                age:'',
+                name:'',
+                sex:''
+            }
+        }
+        render(){
+            return (
+                <div>
+                    <form onSubmit={this.appendElement}>
+                        <p>
+                            请输入姓名：<input name="name" onChange={this.saveFormData} value={this.state.form.name}/>
+                        </p>
+                        <p>
+                            请输入性别：<input name="sex" onChange={this.saveFormData} value={this.state.form.sex}/>
+                        </p>
+                        <p>
+                            请输入年龄：<input name="age" onChange={this.saveFormData} value={this.state.form.age}/>
+                        </p>
+                        <p>
+                            <button>添加</button>
+                        </p>    
+                    </form>
+                    <ul onClick={this.props.handlerClick}>
+                    {
+                        this.state.dataList.map(item =>{
+                            return <Item key={item.id} {...item}/>
+                        })
+                    }
+                    </ul>
+                </div>
+            )
+        }
+        saveFormData = (event) => {
+            let form = this.state.form;
+            this.setState({
+                form:{
+                    ...form,
+                    [event.target.name]:event.target.value
+                }
+            })
+        }
+        appendElement = (event) => {
+            event.preventDefault();
+            let dataList = this.state.dataList,
+                form = this.state.form;
+            this.setState({
+                dataList:[...dataList,{
+                    id:dataList.length,
+                    name:form.name,
+                    age:form.age,
+                    sex:form.sex
+                }],
+                form:{
+                    name:'',
+                    age:"",
+                    sex:''
+                }
+            })
+        }
+
+    }
+    ReactDOM.render(<Person handlerClick={() => {console.log('handlerClick');}}/>,document.getElementById('app'));
+
+</script>
+</html>

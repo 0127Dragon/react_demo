@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<script src="./js/react.development.js"></script>
+<script src="./js/react-dom.development.js"></script>
+<script src="./js/babel.min.js"></script>
+<script src="./js/prop-types.js"></script>
+<script type="text/babel">
+    class LifeTest extends React.Component{
+        state = {
+            opacity:1,
+            data:0
+        }
+        render() {
+            return (
+                <div>
+                    <h1 style={{
+                        opacity:this.state.opacity
+                    }}>LifeTest</h1>
+                    <button onClick={this.death}>点击卸载组件</button>    
+                </div>
+            )
+        }
+        //组件挂载完成钩子
+        componentDidMount(){
+            this.timer = setInterval(() => {
+                let { opacity } = this.state;
+                opacity -= 0.1;
+                if(opacity <= 0){
+                    opacity = 1;
+                }
+                this.setState({
+                    opacity
+                })
+            },150)
+            console.log("组件挂载完成！");
+        }
+        //state更新之前钩子
+        componentWillUpdate(){
+            console.log('组件更新Will？',this.state);
+        }
+        //state更新之后钩子
+        componentDidUpdate(){
+            console.log('组件更新Did？',this.state);
+        }
+        //组件被卸载之前钩子
+        componentWillUnmount(){
+            console.log("组件即将被卸载");
+            clearInterval(this.timer)
+        }
+        death = () => {
+            //卸载组件
+            ReactDOM.unmountComponentAtNode(document.getElementById('app'))
+        }
+
+    }
+    ReactDOM.render(<LifeTest/>,document.getElementById('app'))
+</script>
+</html>
