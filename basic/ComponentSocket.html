@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<script src="./js/react.development.js"></script>
+<script src="./js/react-dom.development.js"></script>
+<script src="./js/babel.min.js"></script>
+<script src="./js/prop-types.js"></script>
+<script type="text/babel">
+    class SocketA extends React.Component{
+        render(){
+            return(
+                <div>
+                    <h1 style={{textAlign:'center'}}>SocketA</h1>
+                    <p><input type="text" ref={(dom) => this.input = dom}/><button onClick={() => this.sendB()}>send b</button></p>
+                    {this.props.list.map(i => <p>{i}</p>)}
+                </div>
+            )
+        }
+        sendB(){
+            this.props.submit(this.input.value);
+        }
+    }
+    class SocketB extends React.Component{
+        render(){
+            return(
+                <div>
+                    <h1 style={{textAlign:'center'}}>SocketB</h1>
+                    <p><input type="text" ref={(dom) => this.input = dom}/><button onClick={() => this.sendA()}>send a</button></p>
+                    {this.props.list.map(i => <p>{i}</p>)}
+                </div>
+            )
+        }
+        sendA(){
+            this.props.submit(this.input.value);
+        }
+    }
+
+
+    class Context extends React.Component{
+        state = {
+            socketA:[],
+            socketB:[]
+        }
+
+        receiveAMessage(msg){
+            let { socketB } = this.state;
+            this.setState({
+                'socketB':[...socketB,msg]
+            })
+        }
+        receiveBMessage(msg){
+            let { socketA } = this.state;
+            this.setState({
+                'socketA':[...socketA,msg]
+            })
+        }
+        render() {
+            let ItemStyle = {flex:1};
+            return (
+                <div style={{
+                    display:'flex',
+                    width:'100%',
+                    height:'500px'
+                }}>
+                    <div style={ItemStyle}>
+                        <SocketA list={this.state.socketA} submit={(msg) => this.receiveAMessage(msg)}/>
+                    </div>
+                    <div style={ItemStyle}>
+                        <SocketB list={this.state.socketB} submit={(msg) => this.receiveBMessage(msg)}/>
+                    </div>
+                </div>
+            )
+        }
+
+    }
+    ReactDOM.render(<Context/>,document.getElementById('app'))
+</script>
+</html>
