@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .list{
+        margin: 0 auto;
+        width: 600px;
+        height: 180px;
+        border: 1px solid black;
+        overflow: auto;
+    }
+    .item{
+        height: 30px;
+        line-height: 30px;
+        background-color: skyblue;
+    }
+</style>
+<body>
+    <div id="app"></div>
+</body>
+<script src="./js/17.0.1/react.development.js"></script>
+<script src="./js/17.0.1/react-dom.development.js"></script>
+<script src="./js/17.0.1/babel.min.js"></script>
+<script src="./js/17.0.1/prop-types.js"></script>
+<script type="text/babel">
+    class NewsItem extends React.Component{
+        render(){
+            return (
+                <div className="item">{this.props.context}</div>
+            )
+        }
+    }
+    class NewsList extends React.Component{
+        state = {
+            dataList:[]
+        };
+        listRef = React.createRef();
+        componentDidMount(){
+            this.timer = setInterval(() => {
+                const {dataList} = this.state;
+                this.setState({
+                    dataList:[
+                        {
+                            index:dataList.length + 1,
+                            context:'新闻' + (dataList.length + 1)
+                        },
+                        ...dataList
+                    ]
+                })
+            },1500)
+        }
+        componentDidUpdate(prevProps,prevState,height){
+            this.listRef.current.scrollTop += this.listRef.current.scrollHeight - height
+        }
+        render(){
+            return(
+                <div className="list" ref={this.listRef}>
+                    {this.state.dataList.map((item,key) => <NewsItem context={item.context}/>)}
+                </div>
+            )
+        }
+
+
+        getSnapshotBeforeUpdate(prevProps,prevState){
+            console.log(this.listRef.current.scrollHeight);
+            return this.listRef.current.scrollHeight;
+        }
+
+    }
+    ReactDOM.render(<NewsList/>,document.getElementById('app'))
+</script>
+</html>
